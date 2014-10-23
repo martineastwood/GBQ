@@ -1,6 +1,6 @@
 # GBQ
 
-The `GBQ` package provides a wrapper around Google's BigQuery command line tool allowing it to be used from within Julia
+The `GBQ` package provides a thin wrapper around Google's BigQuery command line tool allowing it to be used from within Julia
 
 ## Prerequisites
 
