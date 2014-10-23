@@ -4,7 +4,7 @@ The `GBQ` package provides a wrapper around Google's BigQuery command line tool 
 
 ## Prerequisites
 
-You must have a working installation of the Google SDk and the Google BigQuery command line tool. Information about how to install them and set
+You must have a working installation of the Google SDK and the Google BigQuery command line tool. Information about how to install them and set
 up authorisation, default projects etc can be found at:
 
 * https://cloud.google.com/bigquery/bq-command-line-tool
@@ -15,7 +15,7 @@ up authorisation, default projects etc can be found at:
 `GBQ` can be installed through Julia using Pkg.clone
 
 ```
-Pkg.clone("https://github.com/martineastwood/GBQ.jl.git")
+Pkg.clone("https://github.com/martineastwood/GBQ.git")
 ```
 
 ## Examples
