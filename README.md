@@ -1,6 +1,5 @@
 # GBQ
 
-<<<<<<< HEAD
 The `GBQ` package provides a wrapper around Google's BigQuery command line tool allowing it to be used from within Julia
 
 ## Prerequisites
@@ -11,14 +10,11 @@ The `GBQ` package provides a thin wrapper around Google's BigQuery command line 
 
 ## Prerequisites
 
-You must have a working installation of the Google SDK and the Google BigQuery command line tool. Information about how to install them and set
->>>>>>> 6233d8f58e1b1de2fe81dae1f6536e569b6159cb
-up authorisation, default projects etc can be found at:
+You must have a working installation of the Google SDK and the Google BigQuery command line tool. Information about how to install them and set up authorisation, default projects etc can be found at:
 
 * https://cloud.google.com/bigquery/bq-command-line-tool
 * https://developers.google.com/api-client-library/python/start/installation
 
-<<<<<<< HEAD
 =======
 
 ## Dependancies
@@ -26,17 +22,12 @@ up authorisation, default projects etc can be found at:
 `GBQ` uses the Julia [DataFrames](https://github.com/JuliaStats/DataFrames.jl) and [JSON](https://github.com/JuliaLang/JSON.jl) packages
 
 
->>>>>>> 6233d8f58e1b1de2fe81dae1f6536e569b6159cb
 ## Installation
 
 `GBQ` can be installed through Julia using Pkg.clone
 
 ```
-<<<<<<< HEAD
-Pkg.clone("https://github.com/martineastwood/GBQ.jl.git")
-=======
 Pkg.clone("https://github.com/martineastwood/GBQ.git")
->>>>>>> 6233d8f58e1b1de2fe81dae1f6536e569b6159cb
 ```
 
 ## Examples
@@ -72,5 +63,8 @@ gbq_list_projects()
 
 ### copy table from one dataset to another
 gbq_copy_table(my_old_dataset, my_old_table, my_new_dataset, my_new_table)
+
+### check if table exists
+gbq_table_exists("my_table")
 
 ```
