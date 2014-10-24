@@ -2,10 +2,10 @@
 
 The `GBQ` package provides a wrapper around Google's BigQuery command line tool allowing it to be used from within Julia
 
-## Prerequisites
+### Prerequisites
 
 You must have a working installation of the Google SDk and the Google BigQuery command line tool. Information about how to install them and set
-=======
+
 The `GBQ` package provides a thin wrapper around Google's BigQuery command line tool allowing it to be used from within Julia. 
 
 ## Prerequisites
