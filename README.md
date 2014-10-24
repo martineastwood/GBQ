@@ -1,21 +1,42 @@
 # GBQ
 
+<<<<<<< HEAD
 The `GBQ` package provides a wrapper around Google's BigQuery command line tool allowing it to be used from within Julia
 
 ## Prerequisites
 
 You must have a working installation of the Google SDk and the Google BigQuery command line tool. Information about how to install them and set
+=======
+The `GBQ` package provides a thin wrapper around Google's BigQuery command line tool allowing it to be used from within Julia. 
+
+## Prerequisites
+
+You must have a working installation of the Google SDK and the Google BigQuery command line tool. Information about how to install them and set
+>>>>>>> 6233d8f58e1b1de2fe81dae1f6536e569b6159cb
 up authorisation, default projects etc can be found at:
 
 * https://cloud.google.com/bigquery/bq-command-line-tool
 * https://developers.google.com/api-client-library/python/start/installation
 
+<<<<<<< HEAD
+=======
+
+## Dependancies
+
+`GBQ` uses the Julia [DataFrames](https://github.com/JuliaStats/DataFrames.jl) and [JSON](https://github.com/JuliaLang/JSON.jl) packages
+
+
+>>>>>>> 6233d8f58e1b1de2fe81dae1f6536e569b6159cb
 ## Installation
 
 `GBQ` can be installed through Julia using Pkg.clone
 
 ```
+<<<<<<< HEAD
 Pkg.clone("https://github.com/martineastwood/GBQ.jl.git")
+=======
+Pkg.clone("https://github.com/martineastwood/GBQ.git")
+>>>>>>> 6233d8f58e1b1de2fe81dae1f6536e569b6159cb
 ```
 
 ## Examples
