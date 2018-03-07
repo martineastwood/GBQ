@@ -7,8 +7,8 @@ using DataFrames
 
 
 # functions to export
-export gbq_large_results, gbq_show, gbq_head, gbq_list_tables, 
-gbq_list_datasets, gbq_list_projects, gbq_query, gbq_create_dataset, 
+export gbq_large_results, gbq_show, gbq_head, gbq_list_tables,
+gbq_list_datasets, gbq_list_projects, gbq_query, gbq_create_dataset,
 gbq_copy_table, gbq_table_exists
 
 
@@ -29,7 +29,7 @@ function gbq_large_results(query, project, dataset, table)
   if gbq_table_exists(dataset, table)
     throw(GBQException("Destination Table Already Exists"))
   end
-  response = JSON.parse(readall(`bq --format=json --quiet=True query
+  response = JSON.parse(readstring(`bq --format=json --quiet=True query
   --destination_table=$project:$dataset.$table "$query"`))
   return _gbq_parse(response)
 end
@@ -63,11 +63,11 @@ function _gbq_parse(gbq_dict)
 end
 
 
-# Execute a query 
+# Execute a query
 #
 # Returns a dataframe
 function gbq_query(query, max_rows=100000)
-  response = JSON.parse(readall(`bq --format=json  --quiet=True query --max_rows="$max_rows" "$query"`))
+  response = JSON.parse(readstring(`bq --format=json  --quiet=True query --max_rows="$max_rows" "$query"`))
   return _gbq_parse(response)
 end
 
@@ -76,7 +76,7 @@ end
 #
 # Returns a dataframe
 function gbq_list_projects()
-  response = JSON.parse(readall(`bq ls --format=json -p`))
+  response = JSON.parse(readstring(`bq ls --format=json -p`))
   return _gbq_parse(response)
 end
 
@@ -85,7 +85,7 @@ end
 #
 # Returns a dataframe
 function gbq_list_datasets()
-  response = JSON.parse(readall(`bq ls --format=json`))
+  response = JSON.parse(readstring(`bq ls --format=json`))
   return _gbq_parse(response)
 end
 
@@ -94,7 +94,7 @@ end
 #
 # Returns a dataframe
 function gbq_list_tables(dataset)
-  response = JSON.parse(readall(`bq ls --format=json "$dataset"`))
+  response = JSON.parse(readstring(`bq ls --format=json "$dataset"`))
   return _gbq_parse(response)
 end
 
@@ -103,7 +103,7 @@ end
 #
 # Returns a dataframe
 function gbq_head(dataset, table, num_rows=10)
-  response = JSON.parse(readall(`bq --format=json head -n $num_rows $dataset.$table`))
+  response = JSON.parse(readstring(`bq --format=json head -n $num_rows $dataset.$table`))
   return _gbq_parse(response)
 end
 
@@ -112,7 +112,7 @@ end
 #
 # Returns dict containing schema
 function gbq_show(dataset, table)
-  return JSON.parse(readall(`bq --format=json show $dataset.$table`))
+  return JSON.parse(readstring(`bq --format=json show $dataset.$table`))
 end
 
 
@@ -120,7 +120,7 @@ end
 #
 # returns string containing response from Google BigQuery
 function gbq_create_dataset(dataset)
-  return readall(`bq mk $dataset`)
+  return readstring(`bq mk $dataset`)
 end
 
 
@@ -128,7 +128,7 @@ end
 #
 # returns string containing response from Google BigQuery
 function gbq_copy_table(dataset1, table1, dataset2, table2)
-  return readall(`bq cp --quiet=True $dataset1.$table1 $dataset2.$table2`)
+  return readstring(`bq cp --quiet=True $dataset1.$table1 $dataset2.$table2`)
 end
 
 end # module
