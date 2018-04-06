@@ -66,8 +66,8 @@ end
 # Execute a query 
 #
 # Returns a dataframe
-function gbq_query(query; max_rows=100, use_legacy_sql=false, quiet=true)
-  response = JSON.parse(readstring(`bq --format=json  --quiet="$quiet" query --max_rows="$max_rows" --use_legacy_sql="$use_legacy_sql" "$query"`))
+function gbq_query(query; use_legacy_sql=false, quiet=true)
+  response = JSON.parse(readstring(`bq --format=json  --quiet="$quiet" query --use_legacy_sql="$use_legacy_sql" "$query"`))
   return _gbq_parse(response)
 end
 
