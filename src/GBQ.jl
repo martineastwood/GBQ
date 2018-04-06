@@ -47,19 +47,18 @@ end
 # internal function to parse json response returned from big query
 #
 # returns a dataframe
-function _gbq_parse(gbq_dict)
-  df = DataFrame()
-  cols = Dict()
-  for n in collect(keys(gbq_dict[1]))
-    cols[n] = []
-  end
-  for row in gbq_dict
-      for n in collect(keys(row))
-        cols[n] = [cols[n], row[n]]
-      end
-  end
-  df = convert(DataFrame, cols)
-  return df
+function _gbq_parse(response)
+    cols = collect(keys(response[1]))
+    values = Dict()
+    for key in cols
+        values[key] = []
+    end
+    for dict in response
+        for key in cols
+            push!(values[key], dict[key]) 
+        end
+    end
+    return convert(DataFrame, values)
 end
 
 
