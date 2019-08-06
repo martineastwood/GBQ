@@ -12,7 +12,7 @@ You must have a working installation of the Google SDK and the Google BigQuery c
 
 
 
-## Dependancies
+## Dependencies
 
 `GBQ` uses the Julia [DataFrames](https://github.com/JuliaStats/DataFrames.jl) and [JSON](https://github.com/JuliaLang/JSON.jl) packages
 
