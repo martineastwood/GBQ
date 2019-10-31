@@ -1,0 +1,4 @@
+name = "GBQ"
+uuid = "d9b832a0-d9dc-4c3b-8be8-e0fb0d44e87d"
+authors = ["Martin Eastwood"]
+version = "0.1.0"
