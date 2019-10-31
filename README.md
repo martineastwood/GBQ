@@ -19,10 +19,10 @@ You must have a working installation of the Google SDK and the Google BigQuery c
 
 ## Installation
 
-`GBQ` can be installed through Julia using Pkg.clone
+`GBQ` can be installed through Julia using Pkg.add
 
 ```
-Pkg.clone("https://github.com/martineastwood/GBQ.git")
+Pkg.add(PackageSpec(url="https://github.com/martineastwood/GBQ.git"))
 ```
 
 ## Examples
