@@ -2,3 +2,7 @@ name = "GBQ"
 uuid = "d9b832a0-d9dc-4c3b-8be8-e0fb0d44e87d"
 authors = ["Martin Eastwood"]
 version = "0.1.0"
+
+[deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
