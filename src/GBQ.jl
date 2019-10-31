@@ -1,21 +1,21 @@
 module GBQ
 
-
 # external library dependancies
 using JSON
 using DataFrames
 
 
 # functions to export
-export gbq_large_results, gbq_show, gbq_head, gbq_list_tables, 
-gbq_list_datasets, gbq_list_projects, gbq_query, gbq_create_dataset, 
+export gbq_large_results, gbq_show, gbq_head, gbq_list_tables,
+gbq_list_datasets, gbq_list_projects, gbq_query, gbq_create_dataset,
 gbq_copy_table, gbq_table_exists
 
 
 # custom exception for GBQ package
-type GBQException <: Exception
-           var::String
+struct GBQException <: Exception
+    var::String
 end
+
 Base.showerror(io::IO, e::GBQException) = print(io, e.var);
 
 
@@ -29,8 +29,7 @@ function gbq_large_results(query, project, dataset, table)
   if gbq_table_exists(dataset, table)
     throw(GBQException("Destination Table Already Exists"))
   end
-  response = JSON.parse(readstring(`bq --format=json --quiet=True query
-  --destination_table=$project:$dataset.$table "$query"`))
+  response = JSON.parse(read(`bq --format=json --quiet=True query --destination_table=$project:$dataset.$table "$query"`, String))
   return _gbq_parse(response)
 end
 
@@ -55,18 +54,18 @@ function _gbq_parse(response)
     end
     for dict in response
         for key in cols
-            push!(values[key], dict[key]) 
+            push!(values[key], dict[key])
         end
     end
     return convert(DataFrame, values)
 end
 
 
-# Execute a query 
+# Execute a query
 #
 # Returns a dataframe
 function gbq_query(query; use_legacy_sql=false, quiet=true, max_rows=100000000)
-  response = JSON.parse(readstring(`bq --format=json  --quiet="$quiet" query --use_legacy_sql="$use_legacy_sql" --max_rows="$max_rows" "$query"`))
+  response = JSON.parse(read(`bq --format=json  --quiet="$quiet" query --use_legacy_sql="$use_legacy_sql" --max_rows="$max_rows" "$query"`, String))
   return _gbq_parse(response)
 end
 
@@ -75,7 +74,7 @@ end
 #
 # Returns a dataframe
 function gbq_list_projects()
-  response = JSON.parse(readstring(`bq ls --format=json -p`))
+  response = JSON.parse(read(`bq ls --format=json -p`, String))
   return _gbq_parse(response)
 end
 
@@ -84,7 +83,7 @@ end
 #
 # Returns a dataframe
 function gbq_list_datasets()
-  response = JSON.parse(readstring(`bq ls --format=json`))
+  response = JSON.parse(read(`bq ls --format=json`, String))
   return _gbq_parse(response)
 end
 
@@ -93,7 +92,7 @@ end
 #
 # Returns a dataframe
 function gbq_list_tables(dataset)
-  response = JSON.parse(readstring(`bq ls --format=json "$dataset"`))
+  response = JSON.parse(read(`bq ls --format=json "$dataset"`, String))
   return _gbq_parse(response)
 end
 
@@ -102,7 +101,7 @@ end
 #
 # Returns a dataframe
 function gbq_head(dataset, table, num_rows=10)
-  response = JSON.parse(readstring(`bq --format=json head -n $num_rows $dataset.$table`))
+  response = JSON.parse(read(`bq --format=json head -n $num_rows $dataset.$table`, String))
   return _gbq_parse(response)
 end
 
@@ -111,7 +110,7 @@ end
 #
 # Returns dict containing schema
 function gbq_show(dataset, table)
-  return JSON.parse(readstring(`bq --format=json show $dataset.$table`))
+  return JSON.parse(read(`bq --format=json show $dataset.$table`, String))
 end
 
 
@@ -119,7 +118,7 @@ end
 #
 # returns string containing response from Google BigQuery
 function gbq_create_dataset(dataset)
-  return readstring(`bq mk $dataset`)
+  return read(`bq mk $dataset`, String)
 end
 
 
@@ -127,7 +126,7 @@ end
 #
 # returns string containing response from Google BigQuery
 function gbq_copy_table(dataset1, table1, dataset2, table2)
-  return readstring(`bq cp --quiet=True $dataset1.$table1 $dataset2.$table2`)
+  return read(`bq cp --quiet=True $dataset1.$table1 $dataset2.$table2`, String)
 end
 
-end # module
+end
