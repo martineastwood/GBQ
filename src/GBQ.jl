@@ -57,7 +57,7 @@ function _gbq_parse(response)
             push!(values[key], dict[key])
         end
     end
-    return convert(DataFrame, values)
+    return DataFrame(values)
 end
 
 
