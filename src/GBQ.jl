@@ -60,13 +60,46 @@ function _gbq_parse(response)
     return DataFrame(values)
 end
 
+# internal function to parse int and float in json response from big query
+#
+# returns a dataframe
+function _basic_type_converter(df)
+  float_col = []
+  int_col = []
+  for i in names(df)
+      try
+          if eltype(tryparse.(Int, collect(skipmissing(df[!, i])))) == Int
+              int_col = vcat(int_col, i)
+          elseif eltype(tryparse.(Float64, collect(skipmissing(df[!, i])))) == Float64
+              float_col = vcat(float_col, i)
+          end
+      catch
+      end
+  end
+  try
+      if length(int_col) > 0
+          transform!(df, int_col .=> ByRow(x -> passmissing(parse)(Int, x)) .=> int_col)
+      end
+      if length(float_col) > 0
+          transform!(df, float_col .=> ByRow(x -> passmissing(parse)(Float64, x)) .=> float_col)
+      end
+  catch e
+      println(e)
+  end
+  return df
+end
+
 
 # Execute a query
 #
 # Returns a dataframe
-function gbq_query(query; use_legacy_sql=false, quiet=true, max_rows=100000000)
+function gbq_query(query; convert_numeric=false, use_legacy_sql=false, quiet=true, max_rows=100000000)
   response = JSON.parse(read(`bq --format=json  --quiet="$quiet" query --use_legacy_sql="$use_legacy_sql" --max_rows="$max_rows" "$query"`, String))
-  return _gbq_parse(response)
+  if convert_numeric == true
+    return _basic_type_converter(_gbq_parse(response))  
+  else
+    return _gbq_parse(response)
+  end
 end
 
 
