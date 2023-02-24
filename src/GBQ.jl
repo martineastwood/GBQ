@@ -95,7 +95,6 @@ end
 # Returns a dataframe
 function gbq_query(query; convert_numeric=false, use_legacy_sql=false, quiet=true, max_rows=100000000)
   response = JSON.parse(read(`bq --format=json  --quiet="$quiet" query --use_legacy_sql="$use_legacy_sql" --max_rows="$max_rows" "$query"`, String))
-  print(convert_numeric)
   if convert_numeric == true
     return _basic_type_converter(_gbq_parse(response))  
   else
