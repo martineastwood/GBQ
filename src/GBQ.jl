@@ -89,7 +89,6 @@ function _basic_type_converter(df)
   return df
 end
 
-
 # Execute a query
 #
 # Returns a dataframe
@@ -120,15 +119,16 @@ function gbq_list_datasets()
   return _gbq_parse(response)
 end
 
-
 # lists all tables in a specified dataset
 #
 # Returns a dataframe
-function gbq_list_tables(dataset)
+function gbq_list_tables(dataset::AbstractString)
   response = JSON.parse(read(`bq ls --format=json "$dataset"`, String))
-  return _gbq_parse(response)
+  tables = DataFrame(table_id=[table["tableReference"]["tableId"] for table in response],
+                     creation_time=[table["creationTime"] for table in response],
+                     id=[table["id"] for table in response])
+  return tables
 end
-
 
 # preview the head of the table
 #
@@ -138,14 +138,12 @@ function gbq_head(dataset, table, num_rows=10)
   return _gbq_parse(response)
 end
 
-
 # examine the schema for a table
 #
 # Returns dict containing schema
 function gbq_show(dataset, table)
   return JSON.parse(read(`bq --format=json show $dataset.$table`, String))
 end
-
 
 # create a new dataset in the default project
 #
@@ -161,5 +159,32 @@ end
 function gbq_copy_table(dataset1, table1, dataset2, table2)
   return read(`bq cp --quiet=True $dataset1.$table1 $dataset2.$table2`, String)
 end
+
+# upload a table
+#
+# makes a temporary JSON file from a dataframe and sends it to BigQuery
+function gbq_upload(df::DataFrame, project::AbstractString, dataset::AbstractString, table::AbstractString, overwrite::Bool=false, append::Bool=false)
+  # write to temporary JSON file
+  temp_file = joinpath(tempdir(), "temp.json")
+  open(temp_file,"w") do f
+      JSON.print(f, df)
+  end
+  
+  # build command to upload JSON to BigQuery
+  if overwrite
+      cmd = `bq load --autodetect --quiet=true --project_id=$project --source_format=NEWLINE_DELIMITED_JSON --replace=true $dataset.$table $temp_file`
+  else append
+      cmd = `bq load --autodetect --quiet=true --project_id=$project --source_format=NEWLINE_DELIMITED_JSON --replace=false $dataset.$table $temp_file`
+  end
+  
+  # run command and capture output
+  output = read(cmd, String)
+  
+  # delete temporary file
+  rm(temp_file)
+  
+  return output
+end
+
 
 end
